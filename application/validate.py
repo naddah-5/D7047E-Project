@@ -6,7 +6,7 @@ import time
 import datetime
 
 
-def validate_model(val_loader, loss_function, network, epoch: int, device: str):
+def validate_model(val_loader, loss_function, network, device: str):
         correct = 0
         total = 0
         accuracy = 0

@@ -63,7 +63,7 @@ class Training():
             self.writer.add_scalar('Loss/train', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
 
-            loss, accuracy = validate.validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, epoch=epoch, device=self.device)
+            loss, accuracy = validate.validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
             if loss < best_loss:
                 best_loss = loss
                 torch.save(self.network.state_dict(), "best_network.pt")
