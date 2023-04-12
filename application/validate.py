@@ -1,9 +1,4 @@
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.tensorboard import SummaryWriter
-import time
-import datetime
 
 
 def validate_model(val_loader, loss_function, network, device: str):
