@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 
-import validate
+from validate import validate_model
 
 class Training():
 
@@ -51,7 +51,7 @@ class Training():
             self.writer.add_scalar('Loss/train', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
 
-            loss, accuracy = validate.validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
+            loss, accuracy = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
             if loss < best_loss:
                 best_loss = loss
                 torch.save(self.network.state_dict(), "best_network.pt")
