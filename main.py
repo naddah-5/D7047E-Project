@@ -4,6 +4,9 @@ from application.train import Training
 from application.test import test_model
 import torch
 
+from dataset.dataset import load_dataset
+
+
 def main():
     epochs = 20
     batch_size = 10
