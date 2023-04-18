@@ -16,13 +16,13 @@ def main():
     my_device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set device to gpu if available
     print("using device ", my_device)
     
-    train_loader, validation_loader, test_loader, _ = load_dataset()
+    train_loader, validation_loader, test_loader= load_dataset()
     
 
     model = CNN(class_count=10, device=my_device)
 
 
-    training = Training(model, train_loader, validation_loader, test_loader, test_loader, epochs, learning_rate, device=my_device)
+    training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device)
     training.train_model()
     
 

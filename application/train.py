@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 
-from validate import validate_model
+from .validate import validate_model
 
 class Training():
 
