@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class CNN(nn.Module):
-    def __init__(self, class_count: int = 10, dropout: float = 0.5, drop_in: float = 0.8, device: str = 'cpu'):
+    def __init__(self, class_count: int = 2, dropout: float = 0.5, drop_in: float = 0.8, device: str = 'cpu'):
         super().__init__()
         
         self.features = nn.Sequential(
