@@ -8,7 +8,7 @@ from dataset.dataset import load_dataset
 
 
 def main():
-    epochs = 1
+    epochs = 20
     batch_size = 10
     learning_rate = 0.0001
     best_net: str = ''
