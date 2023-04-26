@@ -3,7 +3,7 @@ import torchvision
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-def load_dataset(scale: list = [32, 32], batch_size: int = 10, ):
+def load_dataset(scale: list = [224, 224], batch_size: int = 10):
     transform = transforms.Compose([
         transforms.Resize(scale),
         transforms.Grayscale(num_output_channels=1),

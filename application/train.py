@@ -7,7 +7,7 @@ from .validate import validate_model
 
 class Training():
 
-    def __init__(self, network, train_loader, val_loader, test_loader, epochs: int, learning_rate, best_net=None,device: str='cpu'):
+    def __init__(self, network, train_loader, val_loader, test_loader, epochs: int, learning_rate, best_net=None,device: str='cpu', debug_prediction: bool = False):
         self.network = network
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -18,6 +18,8 @@ class Training():
         self.writer = SummaryWriter()
         self.best_net = best_net
         self.device=device
+        self.debug_prediction = debug_prediction
+        self.predictions = []
 
     def train_model(self):
         best_loss = 100
@@ -36,6 +38,8 @@ class Training():
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
+                self.predictions.append(predicted)
+
                 loss = self.loss_function(predictions, labels)
                 loss.backward()
 
@@ -50,6 +54,10 @@ class Training():
             accuracy = correct / total
             self.writer.add_scalar('Loss/train', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
+
+            if self.debug_prediction:
+                for i in self.predictions:
+                    print(i)
 
             loss, accuracy = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
             if loss < best_loss:

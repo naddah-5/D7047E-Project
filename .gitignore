@@ -134,3 +134,6 @@ chest_xray/
 *.zip
 *.jpeg
 *.DS_Store
+
+# Ignore TensorBoard data.
+runs/

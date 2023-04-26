@@ -19,10 +19,10 @@ class CNN(nn.Module):
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
-            nn.Linear(320, 21),                 #fc1
+            nn.Linear(768320, 21),                  #fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
-            nn.Linear(21, class_count),         #fc5
+            nn.Linear(21, class_count),             #fc5
         )
 
         
