@@ -5,6 +5,8 @@ def validate_model(val_loader, loss_function, network, device: str):
         correct = 0
         total = 0
         accuracy = 0
+
+        network.eval()
         for _, (data, labels) in enumerate(val_loader):
             data, labels=data.to(device), labels.to(device)
             predictions = network.forward(data)

@@ -22,7 +22,7 @@ class Training():
         self.predictions = []
 
     def train_model(self):
-        best_loss = 100
+        best_accuracy = 0
         iteration = 0
         
         for epoch in range(self.epochs):
@@ -30,6 +30,7 @@ class Training():
             total = 0
             accuracy = 0
             for batch_nr, (data, labels) in enumerate(self.train_loader):
+                self.network.train()
                 iteration += 1
                 data, labels=data.to(self.device), labels.to(self.device)
                 predictions = self.network.forward(data)
@@ -56,16 +57,17 @@ class Training():
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
 
             if self.debug_prediction:
-                sample = self.predictions
                 for i in range(10):
                     print(self.predictions[-i])
 
             loss, accuracy = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
-            if loss < best_loss:
-                best_loss = loss
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
                 torch.save(self.network.state_dict(), "best_network.pt")
-                print("\nFound better network")
+                print("\nFound better network, accuracy -", accuracy)
             self.writer.add_scalar('Loss/validation', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/validation', accuracy, (epoch + 1))
 
-        return ()
+        print("\nBest model had a validation accuracy of -", best_accuracy)
+
+        return
