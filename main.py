@@ -19,7 +19,7 @@ def main():
     train_loader, validation_loader, test_loader= load_dataset()
     
 
-    model = CNN(class_count=10, device=my_device)
+    model = CNN(class_count=2, device=my_device)
 
 
     training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device)
