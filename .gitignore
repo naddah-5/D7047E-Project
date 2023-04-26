@@ -141,3 +141,6 @@ runs/
 
 # Ignore TensorBoard data.
 runs/
+
+# Stored networks.
+*.pt
