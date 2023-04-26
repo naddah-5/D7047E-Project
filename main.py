@@ -19,7 +19,7 @@ def main(epochs: int = 20, batch_size: int = 10, learning_rate: float = 1e-4):
     model = CNN(class_count=2, device=my_device)
 
 
-    training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device, debug_prediction=True)
+    training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device)
     training.train_model()
     
 
