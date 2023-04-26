@@ -23,9 +23,9 @@ def main(epochs: int = 20, batch_size: int = 10, learning_rate: float = 1e-4):
     training.train_model()
     
 
-    test_accuracy = test_model(test_loader=test_loader, network=model, device=my_device)
+    #test_accuracy = test_model(test_loader=test_loader, network=model, device=my_device)
 
-    print("\nTest accuracy: %f" % test_accuracy)
+    #print("\nTest accuracy: %f" % test_accuracy)
 
 if __name__=="__main__":
     main()

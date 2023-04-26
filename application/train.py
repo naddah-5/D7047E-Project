@@ -56,9 +56,9 @@ class Training():
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
 
             if self.debug_prediction:
-                sample = self.predictions[-10]
-                for i in sample:
-                    print(i)
+                sample = self.predictions
+                for i in range(10):
+                    print(self.predictions[-i])
 
             loss, accuracy = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
             if loss < best_loss:
