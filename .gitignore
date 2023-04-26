@@ -130,7 +130,14 @@ dmypy.json
 
 # chest_xray folder
 chest_xray/
+
+# runs
+runs/
+
 # Dataset
 *.zip
 *.jpeg
 *.DS_Store
+
+# Ignore TensorBoard data.
+runs/
