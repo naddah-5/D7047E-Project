@@ -7,7 +7,7 @@ import torch
 from dataset.dataset import load_dataset
 
 
-def main(epochs: int = 200, batch_size: int = 8, learning_rate: float = 1e-5):
+def main(epochs: int = 100, batch_size: int = 8, learning_rate: float = 1e-5):
     best_net: str = ''
 
     my_device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set device to gpu if available
@@ -23,9 +23,9 @@ def main(epochs: int = 200, batch_size: int = 8, learning_rate: float = 1e-5):
     training.train_model()
     
 
-    # test_accuracy = test_model(test_loader=test_loader, network=model, device=my_device)
+    test_accuracy = test_model(test_loader=test_loader, network=model, device=my_device)
 
-    # print("\nTest accuracy: %f" % test_accuracy)
+    print("\nTest accuracy: %f" % test_accuracy)
 
 if __name__=="__main__":
     main()

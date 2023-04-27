@@ -140,4 +140,4 @@ chest_xray/
 runs/
 
 # Stored networks.
-best_network.pt
+*.pt

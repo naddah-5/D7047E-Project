@@ -7,44 +7,48 @@ class CNN(nn.Module):
 
 
         
-        self.features = nn.Sequential(
-            nn.Conv2d(1, 100, 5),
-
+        self.A1 = nn.Sequential(
+            nn.Conv2d(1, 300, 3, padding='same'),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(100, 200, 5),
-            nn.MaxPool2d(2, 2),
-            nn.Conv2d(200, 200, 5),
-            nn.MaxPool2d(2, 2),
-            nn.Conv2d(200, 200, 5),
-            nn.MaxPool2d(2, 2),
-            nn.Conv2d(200, 200, 5),
-            nn.MaxPool2d(2, 2)
         )
 
-        #self.dropout = nn.Dropout(p=dropout)
+        self.A2 = nn.Sequential(
+            nn.Conv2d(1, 300, 5, padding='same'),
+            nn.MaxPool2d(2, 2),
+        )
 
-    #    self.soft = nn.Softmax(dim=1)
+        self.A3 = nn.Sequential(
+            nn.Conv2d(1, 300, 7, padding='same'),
+            nn.MaxPool2d(2, 2),
+        )
+
+        self.B1 = nn.Sequential(
+            nn.Conv2d(900, 100, 3),     # B1
+            nn.MaxPool2d(3, 3),
+            nn.Conv2d(100, 50, 3),
+            nn.MaxPool2d(4, 4)
+        )
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(1_800, 1_800),                  #fc1
+            nn.Linear(3200, 1_000),                  #fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_800, 1_800),
+            nn.Linear(1_000, 1_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_800, 1_800),
+            nn.Linear(1_000, 1_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_800, 1_800),
+            nn.Linear(1_000, 1_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_800, 100),
+            nn.Linear(1_000, 100),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
@@ -54,8 +58,15 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.features(x)
-        x = torch.flatten(x, 1)
+        xA1 = self.A1(x)
+        xA2 = self.A2(x)
+        xA3 = self.A3(x)
+
+        A = torch.cat((xA1, xA2, xA3), dim=1)
+
+        B = self.B1(A)
+
+        x = torch.flatten(B, 1)
         x = self.classifier(x)
         return x
 
