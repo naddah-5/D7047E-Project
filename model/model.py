@@ -11,13 +11,13 @@ class CNN(nn.Module):
             nn.Conv2d(1, 100, 5),
 
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(100, 50, 5),
+            nn.Conv2d(100, 200, 5),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(50, 25, 5),
+            nn.Conv2d(200, 200, 5),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(25, 10, 5),
+            nn.Conv2d(200, 200, 5),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(10, 100, 5),
+            nn.Conv2d(200, 200, 5),
             nn.MaxPool2d(2, 2)
         )
 
@@ -28,11 +28,23 @@ class CNN(nn.Module):
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(900, 1_000),                  #fc1
+            nn.Linear(1_800, 1_800),                  #fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 100),
+            nn.Linear(1_800, 1_800),
+            nn.LeakyReLU(),
+            nn.Dropout(p=dropout),
+
+            nn.Linear(1_800, 1_800),
+            nn.LeakyReLU(),
+            nn.Dropout(p=dropout),
+
+            nn.Linear(1_800, 1_800),
+            nn.LeakyReLU(),
+            nn.Dropout(p=dropout),
+
+            nn.Linear(1_800, 100),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
