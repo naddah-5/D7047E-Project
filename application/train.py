@@ -44,8 +44,8 @@ class Training():
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-                y_true += labels
-                y_pred += predicted
+                y_true += labels.cpu()
+                y_pred += predicted.cpu()
 
                 self.predictions.append(predicted)
 

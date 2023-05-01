@@ -21,8 +21,8 @@ def validate_model(val_loader, loss_function, network, device: str):
 
             loss = loss_function(predictions, labels)
 
-            y_true += labels
-            y_pred += predicted
+            y_true += labels.cpu()
+            y_pred += predicted.cpu()
 
         accuracy = correct / total
         f1 = f1_score(y_true, y_pred)
