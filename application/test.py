@@ -18,8 +18,8 @@ def test_model(test_loader, network, device: str):
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-        y_true += labels
-        y_pred += predicted
+        y_true += labels.cpu().numpy().tolist()
+        y_pred += predicted.cpu().numpy().tolist()
 
     accuracy = correct / total
     f1 = f1_score(y_true, y_pred)
