@@ -10,6 +10,7 @@ def validate_model(val_loader, loss_function, network, device: str):
         y_true = []
         y_pred = []
 
+        network.eval()
         for _, (data, labels) in enumerate(val_loader):
             data, labels=data.to(device), labels.to(device)
             predictions = network.forward(data)
@@ -20,8 +21,8 @@ def validate_model(val_loader, loss_function, network, device: str):
 
             loss = loss_function(predictions, labels)
 
-            y_true += labels
-            y_pred += predicted
+            y_true += labels.cpu().numpy().tolist()
+            y_pred += predicted.cpu().numpy().tolist()
 
         accuracy = correct / total
         f1 = f1_score(y_true, y_pred)
