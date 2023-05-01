@@ -1,10 +1,14 @@
 import torch
+from sklearn.metrics import f1_score
 
 
 def validate_model(val_loader, loss_function, network, device: str):
         correct = 0
         total = 0
         accuracy = 0
+
+        y_true = []
+        y_pred = []
 
         network.eval()
         for _, (data, labels) in enumerate(val_loader):
@@ -17,7 +21,10 @@ def validate_model(val_loader, loss_function, network, device: str):
 
             loss = loss_function(predictions, labels)
 
+            y_true += labels
+            y_pred += predicted
+
         accuracy = correct / total
+        f1 = f1_score(y_true, y_pred)
 
-
-        return loss, accuracy
+        return loss, accuracy ,f1
