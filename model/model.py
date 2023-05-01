@@ -8,22 +8,22 @@ class CNN(nn.Module):
 
         
         self.A1 = nn.Sequential(
-            nn.Conv2d(1, 300, 3, padding='same'),
+            nn.Conv2d(1, 100, 3, padding='same'),
             nn.MaxPool2d(2, 2),
         )
 
         self.A2 = nn.Sequential(
-            nn.Conv2d(1, 300, 5, padding='same'),
+            nn.Conv2d(1, 100, 5, padding='same'),
             nn.MaxPool2d(2, 2),
         )
 
         self.A3 = nn.Sequential(
-            nn.Conv2d(1, 300, 7, padding='same'),
+            nn.Conv2d(1, 100, 7, padding='same'),
             nn.MaxPool2d(2, 2),
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(900, 100, 3),     # B1
+            nn.Conv2d(300, 100, 3),     # B1
             nn.MaxPool2d(3, 3),
             nn.Conv2d(100, 50, 3),
             nn.MaxPool2d(4, 4)
