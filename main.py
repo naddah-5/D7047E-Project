@@ -2,9 +2,14 @@
 from model.model import CNN
 from application.train import Training
 from application.test import test_model
+from model.Resnet_feature_extract import ResNet_extract
+from model.Resnet_fine_tuning import ResNet_tune
+from model.Inception_V3_fine_tuning import Inception_tune
+from model.Inception_V3_feature_extract import Inception_extract
 import torch
 
 from dataset.dataset import load_dataset
+
 
 
 def main(epochs: int = 4, batch_size: int = 8, learning_rate: float = 1e-4):
@@ -15,12 +20,10 @@ def main(epochs: int = 4, batch_size: int = 8, learning_rate: float = 1e-4):
     
     train_loader, validation_loader, test_loader= load_dataset(batch_size=batch_size)
     
-
-    model = CNN(class_count=2, device=my_device)
-
+    model = Inception_tune(class_count=2, device=my_device)
 
     training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device)
-    training.train_model()
+    training.train_model_inception() # make sure to use the right trainer otherwise no goodie train_model is not =/= train_model_inception
     
 
     test_accuracy, f1 = test_model(test_loader=test_loader, network=model, device=my_device)
