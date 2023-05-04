@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class CNN(nn.Module):
     def __init__(self, class_count: int = 10, dropout: float = 0.5, drop_in: float = 0.8, device: str = 'cpu'):
@@ -27,8 +28,12 @@ class CNN(nn.Module):
 
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.features(x)
+        x = F.relu(self.features[0](x))
+        x, indices1 = F.max_pool2d(x, kernel_size=2, stride=2, return_indices=True)
+        x = F.relu(self.features[2](x))
+        x, indices2 = F.max_pool2d(x, kernel_size=2, stride=2, return_indices=True)
+        x = F.relu(self.features[4](x))
         x = torch.flatten(x, 1)
         x = self.classifier(x)
-        return x
+        return x, indices1, indices2
 
