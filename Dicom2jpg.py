@@ -2,23 +2,18 @@ import os
 import pydicom as dicom
 import cv2   
 
-# specify your input and output directories
-input_dir = r'C:\Users\kevin\OneDrive\Documents\Hem dator\D7047E-Project\XRAY DICOM'
-output_dir = r'C:\Users\kevin\OneDrive\Documents\Hem dator\D7047E-Project\XRAY JPEG'
+dicom_dir = r'C:\Users\kevin\OneDrive\Documents\Hem dator\D7047E-Project\XRAY DICOM'
+jpeg_dir = r'C:\Users\kevin\OneDrive\Documents\Hem dator\D7047E-Project\XRAY JPEG'
 
-# create the output directory if it doesn't exist
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+# kolla om det finns en map som jpeg till jpeg filerna
+if not os.path.exists(jpeg_dir):
+    os.makedirs(jpeg_dir)
 
-# loop over all DICOM files in the input directory
-for file in os.listdir(input_dir):
+# loopa igenom alla dicom filer
+for file in os.listdir(dicom_dir):
     if file.endswith('.dcm'):
-        # read the DICOM file
-        ds = dicom.dcmread(os.path.join(input_dir, file))
+        ds = dicom.dcmread(os.path.join(dicom_dir, file))       #läs dicom filen
+        pixel_array_numpy = ds.pixel_array                      #konventera till pixel array
 
-        # convert the pixel array to a numpy array
-        pixel_array_numpy = ds.pixel_array
-
-        # save the numpy array as a JPEG image in the output directory
-        image_path = os.path.join(output_dir, file.replace('.dcm', '.jpg'))
+        image_path = os.path.join(jpeg_dir, file.replace('.dcm', '.jpg')) #spara som en jpeg fil i den nya mappen
         cv2.imwrite(image_path, pixel_array_numpy)
