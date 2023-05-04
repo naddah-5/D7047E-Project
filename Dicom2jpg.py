@@ -12,6 +12,7 @@ if not os.path.exists(jpeg_dir):
 # loopa igenom alla dicom filer
 for file in os.listdir(dicom_dir):
     if file.endswith('.dcm'):
+        
         ds = dicom.dcmread(os.path.join(dicom_dir, file))       #läs dicom filen
         pixel_array_numpy = ds.pixel_array                      #konventera till pixel array
 
