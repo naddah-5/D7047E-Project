@@ -45,6 +45,8 @@ def move(pneumonia_path, viral_path, bacterial_path):
 if __name__=="__main__":
     main()
 
+    # Create a copy of chest_xray and call it chest_xray_pneumonia
+
     # pneumonia_folder_path = "dataset/chest_xray_pneumonia/train/PNEUMONIA"
     # viral_folder_path = "dataset/chest_xray_pneumonia/train/viral"
     # bacterial_folder_path = "dataset/chest_xray_pneumonia/train/bacterial"
