@@ -7,7 +7,7 @@ class ResNet_tune(nn.Module):
         super(ResNet_tune, self).__init__()
         self.model = torchvision.models.resnet34(weights='DEFAULT')
         num_ftrs = self.model.fc.in_features
-        self.model.fc = nn.Linear(num_ftrs, class_count)
+        self.model.fc = nn.Linear(num_ftrs, class_count) # Added layer for our output
 
         self.to(device)
         

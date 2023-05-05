@@ -7,9 +7,9 @@ class ResNet_extract(nn.Module):
         super(ResNet_extract, self).__init__()
         self.model = torchvision.models.resnet18(weights='DEFAULT')
         for param in self.model.parameters():
-            param.requires_grad = False
+            param.requires_grad = False #turn training layers 
         num_ftrs = self.model.fc.in_features
-        self.model.fc = nn.Linear(num_ftrs, class_count)
+        self.model.fc = nn.Linear(num_ftrs, class_count) # added layers for outputs
 
         self.to(device)
         

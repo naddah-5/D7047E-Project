@@ -8,10 +8,10 @@ class Inception_tune(nn.Module):
         self.model = torchvision.models.inception_v3(weights='DEFAULT')
         # Handle the auxilary net
         num_ftrs = self.model.AuxLogits.fc.in_features
-        self.model.AuxLogits.fc = nn.Linear(num_ftrs, class_count)
+        self.model.AuxLogits.fc = nn.Linear(num_ftrs, class_count) # Added layer for our classes
         # Handle the primary net
         num_ftrs = self.model.fc.in_features
-        self.model.fc = nn.Linear(num_ftrs,class_count)
+        self.model.fc = nn.Linear(num_ftrs,class_count) # Added layer for our classes
 
         self.to(device)
         
