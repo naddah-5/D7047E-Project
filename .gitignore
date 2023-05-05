@@ -130,6 +130,7 @@ dmypy.json
 
 # chest_xray folder
 chest_xray/
+chest_xray_pneumonia/
 
 # Dataset
 *.zip
@@ -141,3 +142,5 @@ runs/
 
 # Stored networks.
 *.pt
+
+.idea
