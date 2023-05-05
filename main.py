@@ -23,7 +23,7 @@ def main(epochs: int = 4, batch_size: int = 8, learning_rate: float = 1e-4):
     model = ResNet_tune(class_count=2, device=my_device)
 
     training = Training(model, train_loader, validation_loader, test_loader, epochs, learning_rate, device=my_device)
-    training.train_model() # make sure to use the right trainer otherwise no goodie train_model is not =/= train_model_inception
+    training.train_model() # make sure to use the right trainer train_model for resnet and regular model, train_model_inception for inception net
     
 
     test_accuracy, f1 = test_model(test_loader=test_loader, network=model, device=my_device)
