@@ -13,9 +13,9 @@ def load_dataset(scale: list = [224, 224], batch_size: int = 10):
         # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
-    trainset = datasets.ImageFolder('dataset/chest_xray/train', transform)
-    valset = datasets.ImageFolder('dataset/chest_xray/val', transform)
-    testset = datasets.ImageFolder('dataset/chest_xray/test', transform)
+    trainset = datasets.ImageFolder('dataset/chest_xray_pneumonia/train', transform)
+    valset = datasets.ImageFolder('dataset/chest_xray_pneumonia/val', transform)
+    testset = datasets.ImageFolder('dataset/chest_xray_pneumonia/test', transform)
 
     weights, labels = sample(trainset, 1)
     train_sampler = WeightedRandomSampler(weights, len(labels), replacement=False)
@@ -33,9 +33,9 @@ def load_dataset(scale: list = [224, 224], batch_size: int = 10):
 # size is the % of total dataset. Ex. 1 = 100% and 0.5 = 50%
 def sample(dataset, size):
     class_labels = dataset.targets
-    num_normal = class_labels.count(0)
-    num_pneumonia = class_labels.count(1)
-    min_len = min(num_normal, num_pneumonia) * size
+    num_class0 = class_labels.count(0)
+    num_class1 = class_labels.count(1)
+    min_len = min(num_class0, num_class1) * size
     labels = [0] * min_len + [1] * min_len
     weights = torch.DoubleTensor([1.0 / min_len] * min_len * 2)
 

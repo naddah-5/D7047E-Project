@@ -3,11 +3,13 @@ from model.model import CNN
 from application.train import Training
 from application.test import test_model
 import torch
+import os
+import shutil
 
 from dataset.dataset import load_dataset
 
 
-def main(epochs: int = 4, batch_size: int = 8, learning_rate: float = 1e-4):
+def main(epochs: int = 1, batch_size: int = 10, learning_rate: float = 1e-4):
     best_net: str = ''
 
     my_device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set device to gpu if available
@@ -28,30 +30,32 @@ def main(epochs: int = 4, batch_size: int = 8, learning_rate: float = 1e-4):
     print("\nTest accuracy: %f" % test_accuracy, "\nTest f1: %f" % f1)
 
 
-import os
-import shutil
-def hack():
-    # Set the path to the folder containing the pneumonia images
-    pneumonia_folder_path = "dataset/chest_xray_pneumonia/train/PNEUMONIA"
-
-    # Set the paths to the new viral and bacterial folders
-    viral_folder_path = "dataset/chest_xray_pneumonia/train/viral"
-    bacterial_folder_path = "dataset/chest_xray_pneumonia/train/bacterial"
-
+def move(pneumonia_path, viral_path, bacterial_path):
     # Create the new viral and bacterial folders if they don't already exist
-    os.makedirs(viral_folder_path, exist_ok=True)
-    os.makedirs(bacterial_folder_path, exist_ok=True)
+    os.makedirs(viral_path, exist_ok=True)
+    os.makedirs(bacterial_path, exist_ok=True)
 
     # Loop through the pneumonia folder and move the images to the appropriate folder
-    for filename in os.listdir(pneumonia_folder_path):
+    for filename in os.listdir(pneumonia_path):
         if "virus" in filename:
-            shutil.move(os.path.join(pneumonia_folder_path, filename), os.path.join(viral_folder_path, filename))
+            shutil.move(os.path.join(pneumonia_path, filename), os.path.join(viral_path, filename))
         elif "bacteria" in filename:
-            shutil.move(os.path.join(pneumonia_folder_path, filename), os.path.join(bacterial_folder_path, filename))
-
-    return
-
+            shutil.move(os.path.join(pneumonia_path, filename), os.path.join(bacterial_path, filename))
 
 if __name__=="__main__":
-    # main()
-    hack()
+    main()
+
+    # pneumonia_folder_path = "dataset/chest_xray_pneumonia/train/PNEUMONIA"
+    # viral_folder_path = "dataset/chest_xray_pneumonia/train/viral"
+    # bacterial_folder_path = "dataset/chest_xray_pneumonia/train/bacterial"
+    # move(pneumonia_folder_path, viral_folder_path, bacterial_folder_path)
+    #
+    # pneumonia_folder_path = "dataset/chest_xray_pneumonia/val/PNEUMONIA"
+    # viral_folder_path = "dataset/chest_xray_pneumonia/val/viral"
+    # bacterial_folder_path = "dataset/chest_xray_pneumonia/val/bacterial"
+    # move(pneumonia_folder_path, viral_folder_path, bacterial_folder_path)
+    #
+    # pneumonia_folder_path = "dataset/chest_xray_pneumonia/test/PNEUMONIA"
+    # viral_folder_path = "dataset/chest_xray_pneumonia/test/viral"
+    # bacterial_folder_path = "dataset/chest_xray_pneumonia/test/bacterial"
+    # move(pneumonia_folder_path, viral_folder_path, bacterial_folder_path)
