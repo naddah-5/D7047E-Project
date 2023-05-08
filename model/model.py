@@ -9,21 +9,21 @@ class CNN(nn.Module):
         
         self.A1 = nn.Sequential(
             nn.Conv2d(1, 100, 3, padding='same'),
-            nn.MaxPool2d(2, 2),
+            nn.Dropout2d(p=drop_in)
         )
 
         self.A2 = nn.Sequential(
             nn.Conv2d(1, 100, 5, padding='same'),
-            nn.MaxPool2d(2, 2),
+            nn.Dropout2d(p=drop_in)
         )
 
         self.A3 = nn.Sequential(
             nn.Conv2d(1, 100, 7, padding='same'),
-            nn.MaxPool2d(2, 2),
+            nn.Dropout2d(p=drop_in)
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(300, 100, 3),     # B1
+            nn.Conv2d(300, 100, 3),                 # B1
             nn.MaxPool2d(3, 3),
             nn.Conv2d(100, 50, 3),
             nn.MaxPool2d(4, 4)
@@ -32,7 +32,7 @@ class CNN(nn.Module):
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(3200, 1_000),                  #fc1
+            nn.Linear(3200, 1_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
@@ -52,7 +52,7 @@ class CNN(nn.Module):
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(100, class_count),             #fc5
+            nn.Linear(100, class_count),             # fc5
         )
 
         self.to(device)
@@ -62,7 +62,7 @@ class CNN(nn.Module):
         xA2 = self.A2(x)
         xA3 = self.A3(x)
 
-        A = torch.cat((xA1, xA2, xA3), dim=1)
+        A = torch.add(xA1, xA2, xA3)
 
         B = self.B1(A)
 
