@@ -125,6 +125,10 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+
+# extra data
+/dataset/mer/*
+
 # Pyre type checker
 .pyre/
 
