@@ -130,6 +130,7 @@ dmypy.json
 
 # chest_xray folder
 chest_xray/
+RSNA/
 
 # Dataset
 *.zip

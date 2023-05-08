@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import copy
 
 class CNN(nn.Module):
     def __init__(self, class_count: int = 2, dropout: float = 0.8, drop_in: float = 0.9, device: str = 'cpu'):
@@ -7,32 +8,69 @@ class CNN(nn.Module):
 
 
         
+        self.A0 = nn.Sequential(
+            nn.Conv2d(1, 100, 3),
+            nn.Dropout2d(p=drop_in),
+        )
+
         self.A1 = nn.Sequential(
-            nn.Conv2d(1, 100, 3, padding='same'),
-            nn.Dropout2d(p=drop_in)
+            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Dropout2d(p=dropout),
         )
 
         self.A2 = nn.Sequential(
-            nn.Conv2d(1, 100, 5, padding='same'),
-            nn.Dropout2d(p=drop_in)
+            nn.Conv2d(100, 100, 3),
+            nn.Dropout2d(p=dropout),
         )
 
         self.A3 = nn.Sequential(
-            nn.Conv2d(1, 100, 7, padding='same'),
-            nn.Dropout2d(p=drop_in)
+            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Dropout2d(p=dropout)
+        )
+
+        self.A4 = nn.Sequential(
+            nn.Conv2d(100, 100, 3),
+            nn.Dropout2d(p=dropout),
+        )
+
+        self.A5 = nn.Sequential(
+            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Dropout2d(p=dropout)
+        )
+
+        self.A6 = nn.Sequential(
+            nn.Conv2d(100, 100, 3),
+            nn.Dropout2d(p=dropout),
+            nn.MaxPool2d(2, 2)
+        )
+
+        self.A7 = nn.Sequential(
+            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Dropout2d(p=dropout)
+        )
+
+        self.A8 = nn.Sequential(
+            nn.Conv2d(100, 100, 3),
+            nn.Dropout2d(p=dropout),
+            nn.MaxPool2d(2, 2)
+        )
+
+        self.A9 = nn.Sequential(
+            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Dropout2d(p=dropout)
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(300, 100, 3),                 # B1
-            nn.MaxPool2d(3, 3),
+            nn.Conv2d(100, 100, 3),                 # B1
+            nn.MaxPool2d(2, 2),
             nn.Conv2d(100, 50, 3),
-            nn.MaxPool2d(4, 4)
+            nn.MaxPool2d(2, 2)
         )
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(3200, 1_000),                 # fc1
+            nn.Linear(6_050, 1_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
@@ -58,13 +96,38 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        xA1 = self.A1(x)
-        xA2 = self.A2(x)
-        xA3 = self.A3(x)
+        x = self.A0(x)
+        skipX = copy.copy(x)
 
-        A = torch.add(xA1, xA2, xA3)
+        x = self.A1(x)
 
-        B = self.B1(A)
+        x = torch.add(x, skipX)
+        x = self.A2(x)
+        skipX = copy.copy(x)
+
+        x = self.A3(x)
+
+        x = torch.add(x, skipX)
+        x = self.A4(x)
+        skipX = copy.copy(x)
+
+        x = self.A5(x)
+        
+        x = torch.add(x, skipX)
+        x = self.A6(x)
+        skipX = copy.copy(x)
+
+        x = self.A7(x)
+
+        x = torch.add(x, skipX)
+        x = self.A8(x)
+        skipX = copy.copy(x)
+
+        x = self.A9(x)
+
+        x = torch.add(x, skipX)
+
+        B = self.B1(x)
 
         x = torch.flatten(B, 1)
         x = self.classifier(x)
