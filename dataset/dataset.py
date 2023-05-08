@@ -5,10 +5,10 @@ import torchvision.datasets as datasets
 from torch.utils.data import WeightedRandomSampler
 
 
-def load_dataset(scale: list = [299, 299], batch_size: int = 10): #scale should be Inception=[299, 299] for Inception and ResNet = [224,224]
+def load_dataset(scale: list = [500,500], batch_size: int = 10): #scale should be Inception = [x,y] >= [299, 299], ResNet = [x,y] >= [224,224] 
     transform = transforms.Compose([
         transforms.Resize(scale),
-        transforms.CenterCrop(299),
+        transforms.CenterCrop(480),
         #transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
