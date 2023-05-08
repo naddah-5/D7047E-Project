@@ -10,60 +10,51 @@ class CNN(nn.Module):
         
         self.A0 = nn.Sequential(
             nn.Conv2d(1, 100, 3),
-            nn.Dropout2d(p=drop_in),
         )
 
         self.A1 = nn.Sequential(
             nn.Conv2d(100, 100, 3, padding='same'),
-            nn.Dropout2d(p=dropout),
         )
 
         self.A2 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.Dropout2d(p=dropout),
         )
 
         self.A3 = nn.Sequential(
             nn.Conv2d(100, 100, 3, padding='same'),
-            nn.Dropout2d(p=dropout)
         )
 
         self.A4 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.Dropout2d(p=dropout),
         )
 
         self.A5 = nn.Sequential(
             nn.Conv2d(100, 100, 3, padding='same'),
-            nn.Dropout2d(p=dropout)
         )
 
         self.A6 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.Dropout2d(p=dropout),
             nn.MaxPool2d(2, 2)
         )
 
         self.A7 = nn.Sequential(
             nn.Conv2d(100, 100, 3, padding='same'),
-            nn.Dropout2d(p=dropout)
         )
 
         self.A8 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.Dropout2d(p=dropout),
             nn.MaxPool2d(2, 2)
         )
 
         self.A9 = nn.Sequential(
             nn.Conv2d(100, 100, 3, padding='same'),
-            nn.Dropout2d(p=dropout)
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),                 # B1
+            nn.Conv2d(100, 300, 3),                 # B1
+            nn.Dropout2d(p=0.3),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(100, 50, 3),
+            nn.Conv2d(300, 50, 3),
             nn.MaxPool2d(2, 2)
         )
 
