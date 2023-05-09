@@ -8,60 +8,28 @@ class CNN(nn.Module):
 
 
         
-        self.A0 = nn.Sequential(
-            nn.Conv2d(1, 100, 3),
-        )
-
         self.A1 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
-        )
-
-        self.A2 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
-        )
-
-        self.A3 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
-        )
-
-        self.A4 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
-        )
-
-        self.A5 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
-        )
-
-        self.A6 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
-            nn.MaxPool2d(2, 2)
-        )
-
-        self.A7 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
-        )
-
-        self.A8 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
-            nn.MaxPool2d(2, 2)
-        )
-
-        self.A9 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Conv2d(1, 100, 3),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(100, 200, 5),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(200, 300, 7),
+            nn.MaxPool2d(2, 2),
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(100, 300, 3),                 # B1
-            nn.Dropout2d(p=0.3),
+            nn.Conv2d(300, 600, 3),                 # B1
+            nn.Dropout2d(p=0.2),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(300, 50, 3),
+            nn.Conv2d(600, 600, 3),
+            nn.Dropout2d(p=0.2),
             nn.MaxPool2d(2, 2)
         )
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(6_050, 1_000),                 # fc1
+            nn.Linear(9_600, 1_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
@@ -87,40 +55,11 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.A0(x)
-        skipX = copy.copy(x)
-
         x = self.A1(x)
 
-        x = torch.add(x, skipX)
-        x = self.A2(x)
-        skipX = copy.copy(x)
+        x = self.B1(x)
 
-        x = self.A3(x)
-
-        x = torch.add(x, skipX)
-        x = self.A4(x)
-        skipX = copy.copy(x)
-
-        x = self.A5(x)
-        
-        x = torch.add(x, skipX)
-        x = self.A6(x)
-        skipX = copy.copy(x)
-
-        x = self.A7(x)
-
-        x = torch.add(x, skipX)
-        x = self.A8(x)
-        skipX = copy.copy(x)
-
-        x = self.A9(x)
-
-        x = torch.add(x, skipX)
-
-        B = self.B1(x)
-
-        x = torch.flatten(B, 1)
+        x = torch.flatten(x, 1)
         x = self.classifier(x)
         return x
 
