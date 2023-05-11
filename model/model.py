@@ -10,47 +10,45 @@ class CNN(nn.Module):
         
         self.A1 = nn.Sequential(
             nn.Conv2d(1, 1, 1),
-            nn.Conv2d(1, 100, 3),
+            nn.Conv2d(1, 100, 7),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(100, 200, 5),
+            nn.Conv2d(100, 100, 5),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(200, 300, 7),
+            nn.Conv2d(100, 100, 3),
             nn.MaxPool2d(2, 2),
         )
 
         self.B1 = nn.Sequential(
-            nn.Conv2d(300, 1_000, 3),                 # B1
-            nn.Dropout2d(p=0.2),
+            nn.Conv2d(100, 500, 3),                 # B1
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(1_000, 1_000, 3),
-            nn.Dropout2d(p=0.2),
+            nn.Conv2d(500, 500, 3),
             nn.MaxPool2d(2, 2)
         )
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(16_000, 1_000),                 # fc1
+            nn.Linear(8_000, 8_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
+            nn.Linear(8_000, 8_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
+            nn.Linear(8_000, 5_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
+            nn.Linear(5_000, 5_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 100),
+            nn.Linear(5_000, 1_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(100, class_count),             # fc5
+            nn.Linear(1_000, class_count),             # fc5
         )
 
         self.to(device)
