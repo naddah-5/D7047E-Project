@@ -7,7 +7,7 @@ import torch
 from dataset.dataset import load_dataset
 
 
-def main(epochs: int = 20, batch_size: int = 8, learning_rate: float = 1e-4):
+def main(epochs: int = 30, batch_size: int = 8, learning_rate: float = 1e-4):
     best_net: str = ''
 
     my_device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set device to gpu if available

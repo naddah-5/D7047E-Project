@@ -3,8 +3,8 @@ import numpy
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
-def cnf_matrix_plot(y_true, y_pred, labels):
-    cnf_matrix = confusion_matrix(y_true, y_pred, labels)
+def cnf_matrix_plot(y_true, y_pred):
+    cnf_matrix = confusion_matrix(y_true, y_pred)
     numpy.set_printoptions(precision=2)
     plt.figure()
     plot_confusion_matrix(cnf_matrix, classes=['Healthy', 'Sick'], title='Confusion matrix, without normalization')
@@ -43,3 +43,4 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.tight_layout()
+    plt.show()
