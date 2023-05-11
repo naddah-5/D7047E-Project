@@ -15,7 +15,7 @@ import torchvision
 
 from dataset.dataset import load_dataset
 
-def final(epochs: int = 4, batch_size: int = 6, learning_rate: float = 1e-4):
+def final(epochs: int = 4, batch_size: int = 3, learning_rate: float = 1e-4):
     best_net: str = ''
 
     my_device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set device to gpu if available
@@ -32,9 +32,9 @@ def final(epochs: int = 4, batch_size: int = 6, learning_rate: float = 1e-4):
 
     print("\nValidation accuracy: %f" % accuracy_val, "\nValidation f1: %f" % f1_val)
 
-#    test_accuracy, f1 = test_model(test_loader=test_loader, network=model, device=my_device)
+    test_accuracy, f1 = test_model(test_loader=test_loader, network=model, device=my_device)
 
-#    print("\nTest accuracy: %f" % test_accuracy, "\nTest f1: %f" % f1)
+    print("\nTest accuracy: %f" % test_accuracy, "\nTest f1: %f" % f1)
 
 if __name__=="__main__":
     final()
