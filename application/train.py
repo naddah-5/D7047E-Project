@@ -5,6 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import f1_score
 
 from .validate import validate_model
+from .confusion_matrix import cnf_matrix_plot
 
 class Training():
 
@@ -80,7 +81,5 @@ class Training():
             self.writer.add_scalar('Loss/validation', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/validation', accuracy, (epoch + 1))
             self.writer.add_scalar('f1/validation', f1, (epoch + 1))
-
-        print("\nBest model had a validation accuracy of -", best_accuracy)
 
         return
