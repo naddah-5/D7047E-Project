@@ -90,42 +90,28 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.A0(x)
-        z1 = copy.copy(x)
+        x0 = self.A0(x)
 
-        x = self.A1(x)
+        x1 = self.A1(x0)
 
-        x = torch.add(x, z1)
-        x = torch.div(x, 2)
-        x = self.A2(x)
-        z2 = copy.copy(x)
+        x2 = self.A2((x0 + x1) / 2)
 
-        x = self.A3(x)
+        x3 = self.A3(x2)
 
-        x = torch.add(x, z2)
-        x = self.A4(x)
-        z3 = copy.copy(x)
+        x4 = self.A4((x2 + x3) / 2)
 
-        x = self.A5(x)
+        x5 = self.A5(x4)
         
-        x = torch.add(x, z3)
-        x = torch.div(x, 2)
-        x = self.A6(x)
-        z4 = copy.copy(x)
+        x6 = self.A6((x4 + x5) / 2)
 
-        x = self.A7(x)
+        x7 = self.A7(x6)
 
-        x = torch.add(x, z4)
-        x = torch.div(x, 2)
-        x = self.A8(x)
-        z5 = copy.copy(x)
+        x8 = self.A8((x6 + x7) / 2)
 
-        x = self.A9(x)
+        x9 = self.A9(x8)
 
-        x = torch.add(x, z5)
-        x = torch.div(x, 2)
 
-        B = self.B1(x)
+        B = self.B1((x8 + x9) / 2)
 
         x = torch.flatten(B, 1)
         x = self.classifier(x)
