@@ -1,6 +1,10 @@
 import torch
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
+import numpy
+import matplotlib.pyplot as plt
+
+from .confusion_matrix import plot_confusion_matrix
 
 
 def test_model(test_loader, network, device: str):
@@ -23,6 +27,13 @@ def test_model(test_loader, network, device: str):
         y_pred += predicted.cpu().numpy().tolist()
 
     accuracy = correct / total
-    f1 = f1_score(y_true, y_pred)
-    print(confusion_matrix(y_true, y_pred))
+    f1 = f1_score(y_true, y_pred, labels=[0, 1])
+    cnf_matrix = confusion_matrix(y_true, y_pred)
+    numpy.set_printoptions(precision=2)
+
+    # Plot non-normalized confusion matrix
+    plt.figure()
+    plot_confusion_matrix(cnf_matrix, classes=['Healthy', 'Sick'],
+                      title='Confusion matrix, without normalization')
+
     return accuracy, f1
