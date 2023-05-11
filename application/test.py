@@ -1,5 +1,6 @@
 import torch
 from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix
 
 
 def test_model(test_loader, network, device: str):
@@ -23,4 +24,5 @@ def test_model(test_loader, network, device: str):
 
     accuracy = correct / total
     f1 = f1_score(y_true, y_pred)
+    print(confusion_matrix(y_true, y_pred))
     return accuracy, f1
