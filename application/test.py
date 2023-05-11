@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix
 import numpy
 import matplotlib.pyplot as plt
 
-from .confusion_matrix import plot_confusion_matrix
+from .confusion_matrix import cnf_matrix_plot
 
 
 def test_model(test_loader, network, device: str):
@@ -28,12 +28,7 @@ def test_model(test_loader, network, device: str):
 
     accuracy = correct / total
     f1 = f1_score(y_true, y_pred, labels=[0, 1])
-    cnf_matrix = confusion_matrix(y_true, y_pred)
-    numpy.set_printoptions(precision=2)
 
-    # Plot non-normalized confusion matrix
-    plt.figure()
-    plot_confusion_matrix(cnf_matrix, classes=['Healthy', 'Sick'],
-                      title='Confusion matrix, without normalization')
+    cnf_matrix_plot(y_true, y_pred)
 
     return accuracy, f1
