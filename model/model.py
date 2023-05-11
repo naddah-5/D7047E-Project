@@ -9,8 +9,8 @@ class CNN(nn.Module):
 
         
         self.A0 = nn.Sequential(
-            nn.Conv2d(1, 100, 3),
-            nn.MaxPool2d(2, 2)
+            nn.Conv2d(1, 100, 7),
+            nn.MaxPool2d(4, 4)
         )
 
         self.A1 = nn.Sequential(
@@ -18,7 +18,7 @@ class CNN(nn.Module):
         )
 
         self.A2 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
+            nn.Conv2d(100, 100, 5),
             nn.MaxPool2d(2, 2)
         )
 
@@ -28,7 +28,6 @@ class CNN(nn.Module):
 
         self.A4 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.MaxPool2d(2, 2)
         )
 
         self.A5 = nn.Sequential(
@@ -37,7 +36,6 @@ class CNN(nn.Module):
 
         self.A6 = nn.Sequential(
             nn.Conv2d(100, 100, 3),
-            nn.MaxPool2d(2, 2)
         )
 
         self.A7 = nn.Sequential(
@@ -64,7 +62,7 @@ class CNN(nn.Module):
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(50, 1_000),                 # fc1
+            nn.Linear(450, 1_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
