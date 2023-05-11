@@ -3,16 +3,12 @@ import numpy
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
-def cnf_matrix_plot(y_true, y_pred):
+def cnf_matrix_plot(y_true, y_pred, normalize=False, classes=['Healthy', 'Sick'], cmap=plt.cm.Blues, title='Confusion matrix, without normalization'):
     cnf_matrix = confusion_matrix(y_true, y_pred)
     numpy.set_printoptions(precision=2)
     plt.figure()
-    plot_confusion_matrix(cnf_matrix, classes=['Healthy', 'Sick'], title='Confusion matrix, without normalization')
+    cm = confusion_matrix(y_true, y_pred)
 
-def plot_confusion_matrix(cm, classes,
-                          normalize=False,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
