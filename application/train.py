@@ -82,4 +82,6 @@ class Training():
             self.writer.add_scalar('Accuracy/validation', accuracy, (epoch + 1))
             self.writer.add_scalar('f1/validation', f1, (epoch + 1))
 
+        print("\nBest model had a validation accuracy of -", best_accuracy)
+
         return
