@@ -131,10 +131,14 @@ dmypy.json
 # chest_xray folder
 chest_xray/
 
+# rsna folder
+rsna_dataset/
+
 # Dataset
 *.zip
 *.jpeg
 *.DS_Store
+*.jpg
 
 # Ignore TensorBoard data.
 runs/
