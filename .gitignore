@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 # chest_xray folder
+dataset/*
 chest_xray/
 RSNA/
 
