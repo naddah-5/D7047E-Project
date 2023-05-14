@@ -4,16 +4,18 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torch.utils.data import WeightedRandomSampler
 
-
-def load_dataset(scale: list = [224, 224], batch_size: int = 8):
+#def load_dataset(scale: list = [224, 224], batch_size: int = 8):
+def load_dataset(scale: list = [112, 112], batch_size: int = 8):
     transform = transforms.Compose([
         # transforms.RandomApply(
         #     transforms.RandomRotation(enumerate(range(1,359))),
         #     p=0.01
         # ),
-        transforms.RandomPerspective(distortion_scale=0.1, p=0.01),
-        transforms.RandomVerticalFlip(p=0.01),
-        transforms.RandomHorizontalFlip(p=0.01),
+        # transforms.RandomInvert(p=0.5),
+        # transforms.RandomPerspective(distortion_scale=0.1, p=0.01),
+        # transforms.RandomVerticalFlip(p=0.01),
+        # transforms.RandomHorizontalFlip(p=0.01),
+        transforms.RandAugment(),
         transforms.Resize(scale),
         transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor()
