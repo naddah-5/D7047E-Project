@@ -6,6 +6,7 @@ from model.Resnet_feature_extract import ResNet_extract
 from model.Resnet_fine_tuning import ResNet_tune
 from model.Inception_V3_fine_tuning import Inception_tune
 from model.Inception_V3_feature_extract import Inception_extract
+from model.unet import UNET
 import torch
 
 from dataset.dataset import load_dataset
