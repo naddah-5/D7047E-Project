@@ -5,7 +5,7 @@ import torchvision
 class ResNet_tune(nn.Module):
     def __init__(self, class_count: int = 2, device: str = 'cpu'):
         super(ResNet_tune, self).__init__()
-        self.model = torchvision.models.resnet50(weights='DEFAULT')
+        self.model = torchvision.models.resnet152(weights='DEFAULT')#None or 'default')
         num_ftrs = self.model.fc.in_features
         self.model.fc = nn.Linear(num_ftrs, class_count) # Added layer for our output
 

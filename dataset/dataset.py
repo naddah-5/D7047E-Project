@@ -5,10 +5,10 @@ import torchvision.datasets as datasets
 from torch.utils.data import WeightedRandomSampler
 
 
-def load_dataset(scale: list = [500,500], batch_size: int = 10): #scale should be Inception = [x,y] >= [299, 299], ResNet = [x,y] >= [224,224] 
+def load_dataset(scale: list = [256,256], batch_size: int = 10): #scale should be Inception = [x,y] >= [299, 299], ResNet = [x,y] >= [224,224] 
     transform = transforms.Compose([
         transforms.Resize(scale),
-        transforms.CenterCrop(480),
+        transforms.CenterCrop(224),
         #transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
@@ -16,9 +16,14 @@ def load_dataset(scale: list = [500,500], batch_size: int = 10): #scale should b
 
     
 
-    trainset = datasets.ImageFolder('dataset/chest_xray/train', transform)
-    valset = datasets.ImageFolder('dataset/chest_xray/val', transform)
-    testset = datasets.ImageFolder('dataset/chest_xray/test', transform)
+#    trainset = datasets.ImageFolder('dataset/chest_xray/train', transform) #given Dataset
+#    valset = datasets.ImageFolder('dataset/chest_xray/val', transform) #given Dataset
+#    testset = datasets.ImageFolder('dataset/chest_xray/test', transform) #given Dataset
+
+    trainset = datasets.ImageFolder('dataset/rsna_dataset/training_set', transform) # SVHN Dataset
+    valset = datasets.ImageFolder('dataset/rsna_dataset/validation_set', transform) # SVHN Dataset
+    testset = datasets.ImageFolder('dataset/rsna_dataset/fake_test_set', transform) # SVHN Dataset
+
 
     class_labels = trainset.targets
     num_normal = class_labels.count(0)
