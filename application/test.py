@@ -1,6 +1,10 @@
 import torch
 from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix
+import numpy
+import matplotlib.pyplot as plt
 
+from .confusion_matrix import cnf_matrix_plot
 
 def test_model(test_loader, network, device: str):
     correct = 0
@@ -23,4 +27,5 @@ def test_model(test_loader, network, device: str):
 
     accuracy = correct / total
     f1 = f1_score(y_true, y_pred)
+    cnf_matrix = cnf_matrix_plot(y_true, y_pred)
     return accuracy, f1

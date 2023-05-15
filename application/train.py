@@ -5,6 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import f1_score
 
 from .validate import validate_model
+from .confusion_matrix import cnf_matrix_plot
 
 class Training():
 
