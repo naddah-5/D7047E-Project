@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import f1_score
+
 
 from .validate import validate_model
 
 class Training():
 
-    def __init__(self, network, train_loader, val_loader, test_loader, epochs: int, learning_rate, best_net=None,device: str='cpu'):
+    def __init__(self, network, train_loader, val_loader, test_loader, epochs: int, learning_rate, best_net=None,device: str='cpu', debug_prediction: bool = False):
         self.network = network
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -18,6 +20,8 @@ class Training():
         self.writer = SummaryWriter()
         self.best_net = best_net
         self.device=device
+        self.debug_prediction = debug_prediction
+        self.predictions = []
 
     def train_model(self):
         best_loss = 100
@@ -27,14 +31,23 @@ class Training():
             correct = 0
             total = 0
             accuracy = 0
+
+            y_true = []
+            y_pred = []
+
             for batch_nr, (data, labels) in enumerate(self.train_loader):
                 iteration += 1
+                #print("here")
                 data, labels=data.to(self.device), labels.to(self.device)
-                predictions, _, _ = self.network.forward(data)
+                predictions, _, _, _ = self.network.forward(data)
 
                 _, predicted = torch.max(predictions.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
+
+                y_true.extend(labels.cpu().numpy())
+                y_pred.extend(predicted.cpu().numpy())
+                self.predictions.append(predicted)
 
                 loss = self.loss_function(predictions, labels)
                 loss.backward()
@@ -48,15 +61,25 @@ class Training():
                 )
 
             accuracy = correct / total
+            f1 = f1_score(y_true, y_pred)
             self.writer.add_scalar('Loss/train', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/train', accuracy, (epoch + 1))
+            self.writer.add_scalar('f1/train', f1, (epoch + 1))
 
-            loss, accuracy = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
+            #loss, accuracy, f1 = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
+
+            if self.debug_prediction:
+                for i in self.predictions:
+                    print(i)
+
+            loss, accuracy, f1 = validate_model(val_loader=self.val_loader, loss_function=self.loss_function, network=self.network, device=self.device)
+
             if loss < best_loss:
                 best_loss = loss
                 torch.save(self.network.state_dict(), "best_network.pt")
                 print("\nFound better network")
             self.writer.add_scalar('Loss/validation', loss, (epoch + 1))
             self.writer.add_scalar('Accuracy/validation', accuracy, (epoch + 1))
+            self.writer.add_scalar('f1/validation', f1, (epoch + 1))
 
         return ()

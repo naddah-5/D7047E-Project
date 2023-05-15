@@ -132,8 +132,17 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+#run files
+runs/
+
 # chest_xray folder
 chest_xray/
+
+#saved network
+best_network.pt
+
+# crsna
+/dataset/CRSNA_DATASET_OUR_(split_into_sets)/
 # Dataset
 *.zip
 *.jpeg
