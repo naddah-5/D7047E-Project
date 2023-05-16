@@ -9,76 +9,88 @@ class CNN(nn.Module):
 
         
         self.A0 = nn.Sequential(
-            nn.Conv2d(1, 100, 7),
-            nn.MaxPool2d(4, 4)
+            nn.Conv2d(1, 200, 7),
+            nn.LeakyReLU(),
+            nn.MaxPool2d(4, 4),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A1 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Conv2d(200, 200, 3, padding='same'),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A2 = nn.Sequential(
-            nn.Conv2d(100, 100, 5),
-            nn.MaxPool2d(2, 2)
+            nn.Conv2d(200, 200, 5),
+            nn.LeakyReLU(),
+            nn.MaxPool2d(2, 2),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A3 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Conv2d(200, 200, 3, padding='same'),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A4 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
+            nn.Conv2d(200, 200, 3),
+            nn.LeakyReLU(),
+            nn.MaxPool2d(2, 2),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A5 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Conv2d(200, 200, 3, padding='same'),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A6 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
+            nn.Conv2d(200, 200, 3),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A7 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
+            nn.Conv2d(200, 200, 3, padding='same'),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A8 = nn.Sequential(
-            nn.Conv2d(100, 100, 3),
+            nn.Conv2d(200, 200, 3),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.A9 = nn.Sequential(
-            nn.Conv2d(100, 100, 3, padding='same'),
-        )
-
-        self.B1 = nn.Sequential(
-            nn.Conv2d(100, 200, 3),                 # B1
-            nn.Dropout2d(p=0.3),
-            nn.MaxPool2d(2, 2),
-            nn.Conv2d(200, 50, 3),
-            nn.Dropout2d(p=0.2),
-            nn.MaxPool2d(2, 2)
+            nn.Conv2d(200, 200, 3, padding='same'),
+            nn.LeakyReLU(),
+            nn.Dropout2d(p=0.1)
         )
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_in),
             
-            nn.Linear(450, 1_000),                 # fc1
+            nn.Linear(9_800, 5_000),                 # fc1
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
+            nn.Linear(5_000, 3_000),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
-            nn.LeakyReLU(),
+            nn.Linear(3_000, 3_000),
+            nn.Tanh(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 1_000),
-            nn.LeakyReLU(),
+            nn.Linear(3_000, 3_000),
+            nn.Tanh(),
             nn.Dropout(p=dropout),
 
-            nn.Linear(1_000, 100),
+            nn.Linear(3_000, 100),
             nn.LeakyReLU(),
             nn.Dropout(p=dropout),
 
@@ -108,10 +120,7 @@ class CNN(nn.Module):
 
         x9 = self.A9(x8)
 
-
-        B = self.B1((x8 + x9) / 2)
-
-        x = torch.flatten(B, 1)
+        x = torch.flatten((x8 + x9) / 2, 1)
         x = self.classifier(x)
         return x
 
