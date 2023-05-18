@@ -79,5 +79,3 @@ class CNN(nn.Module):
         x = self.classifier(x)
         return x
     
-
- # Less dropout, smaller dimension collapse, slightly deeper and wider.
