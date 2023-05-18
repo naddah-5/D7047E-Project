@@ -6,23 +6,22 @@ class CNN(nn.Module):
     def __init__(self, class_count: int = 2, dropout: float = 0.6, drop_in: float = 0.8, device: str = 'cpu'):
         super().__init__()
 
-        self.dropin = drop_in
-        self.dropout = dropout
+        self.dropin = nn.Dropout(p=drop_in)
+        self.dropout = nn.Dropout(p=dropout)
         
-        self.A1 = nn.Sequential(
-            nn.Conv2d(1, 1, 1),
-            nn.BatchNorm2d(1),
-            nn.LeakyReLU(),
-
+        self.FeatureA1 = nn.Sequential(
             nn.Conv2d(1, 300, 7),
             nn.BatchNorm2d(300),
             nn.LeakyReLU(),
             nn.MaxPool2d(4, 4),
-
+            
             nn.Conv2d(300, 1, 1),
             nn.BatchNorm2d(1),
             nn.LeakyReLU(),
+        )
 
+
+        self.FeatureA2 = nn.Sequential(
             nn.Conv2d(1, 500, 5),
             nn.BatchNorm2d(500),
             nn.LeakyReLU(),
@@ -31,7 +30,10 @@ class CNN(nn.Module):
             nn.Conv2d(500, 1, 1),
             nn.BatchNorm2d(1),
             nn.LeakyReLU(),
+            )
 
+
+        self.FeatureA3 = nn.Sequential(
             nn.Conv2d(1, 500, 3),
             nn.BatchNorm2d(500),
             nn.LeakyReLU(),
@@ -61,7 +63,7 @@ class CNN(nn.Module):
             nn.LeakyReLU(),
         )
 
-        self.classifierD = nn.Sequential(
+        self.classifierE = nn.Sequential(
             nn.Linear(1_024, class_count),
             nn.Softmax(dim=1)
         )
@@ -69,19 +71,21 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.A1(x)
+        x = self.FeatureA1(x)
+        x = self.FeatureA2(x)
+        x = self.FeatureA3(x)
 
         x = torch.flatten(x, 1)
 
-        x = self.classifierA(x)
-        nn.Dropout(p=self.dropin),
+        x = self.dropin(self.classifierA(x))
+        
+        x = self.dropout(self.classifierB(x))
 
-        x = self.classifierB(x)
-        nn.Dropout(p=self.dropout),
+        x = self.dropout(self.classifierC(x))
 
-        x = self.classifierC(x)
-        nn.Dropout(p=self.dropout),
+        x = self.dropout(self.classifierD(x))
 
-        x = self.classifierD(x)
+        x = self.classifierE(x)
+        
         return x
     
