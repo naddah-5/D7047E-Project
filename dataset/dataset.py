@@ -5,7 +5,7 @@ import torchvision.datasets as datasets
 from torch.utils.data import WeightedRandomSampler
 
 #def load_dataset(scale: list = [224, 224], batch_size: int = 8):
-def load_dataset(scale: list = [112, 112], batch_size: int = 8):
+def load_dataset(scale: list = [224, 224], batch_size: int = 8):
     transform = transforms.Compose([
         # transforms.RandomApply(
         #     transforms.RandomRotation(enumerate(range(1,359))),
@@ -13,18 +13,24 @@ def load_dataset(scale: list = [112, 112], batch_size: int = 8):
         # ),
         # transforms.RandomInvert(p=0.5),
         # transforms.RandomPerspective(distortion_scale=0.1, p=0.01),
-        # transforms.RandomVerticalFlip(p=0.01),
-        # transforms.RandomHorizontalFlip(p=0.01),
-        transforms.RandAugment(),
+        transforms.RandomVerticalFlip(p=0.1),
+        transforms.RandomHorizontalFlip(p=0.1),
+        # transforms.RandAugment(),
         transforms.Resize(scale),
         transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor()
         # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
+    base_transform = transforms.Compose([
+        transforms.Resize(scale),
+        transforms.Grayscale(num_output_channels=1),
+        transforms.ToTensor()
+    ])
+
     trainset = datasets.ImageFolder('dataset/chest_xray/train', transform)
-    valset = datasets.ImageFolder('dataset/chest_xray/val', transform)
-    testset = datasets.ImageFolder('dataset/chest_xray/test', transform)
+    valset = datasets.ImageFolder('dataset/chest_xray/val', base_transform)
+    testset = datasets.ImageFolder('dataset/chest_xray/test', base_transform)
 
     class_labels = trainset.targets
     num_normal = class_labels.count(0)
