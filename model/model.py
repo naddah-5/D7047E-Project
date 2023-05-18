@@ -3,7 +3,7 @@ import torch.nn as nn
 import copy
 
 class CNN(nn.Module):
-    def __init__(self, class_count: int = 2, dropout: float = 0.6, drop_in: float = 0.8, device: str = 'cpu'):
+    def __init__(self, class_count: int = 2, dropout: float = 0.8, drop_in: float = 0.95, device: str = 'cpu'):
         super().__init__()
 
         self.dropin = nn.Dropout(p=drop_in)
@@ -43,27 +43,27 @@ class CNN(nn.Module):
             nn.LeakyReLU(),
         )
 
-        self.classifierA = nn.Sequential(
+        self.classifierA1 = nn.Sequential(
             nn.Linear(10_000, 8_192),
             nn.LeakyReLU(),
         )
 
-        self.classifierB = nn.Sequential(
+        self.classifierA2 = nn.Sequential(
             nn.Linear(8_192, 8_192),
             nn.LeakyReLU(),
         )
 
-        self.classifierC = nn.Sequential(
+        self.classifierA3 = nn.Sequential(
             nn.Linear(8_192, 2_048),
             nn.Tanh(),
         )
 
-        self.classifierD = nn.Sequential(
+        self.classifierA4 = nn.Sequential(
             nn.Linear(2_048, 1_024),
             nn.LeakyReLU(),
         )
 
-        self.classifierE = nn.Sequential(
+        self.classifierA5 = nn.Sequential(
             nn.Linear(1_024, class_count),
             nn.Softmax(dim=1)
         )
@@ -77,15 +77,15 @@ class CNN(nn.Module):
 
         x = torch.flatten(x, 1)
 
-        x = self.dropin(self.classifierA(x))
+        x = self.dropin(self.classifierA1(x))
         
-        x = self.dropout(self.classifierB(x))
+        x = self.dropout(self.classifierA2(x))
 
-        x = self.dropout(self.classifierC(x))
+        x = self.dropout(self.classifierA3(x))
 
-        x = self.dropout(self.classifierD(x))
+        x = self.dropout(self.classifierA4(x))
 
-        x = self.classifierE(x)
+        x = self.classifierA5(x)
         
         return x
     
