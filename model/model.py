@@ -11,53 +11,53 @@ class CNN(nn.Module):
         self.droptail = nn.Dropout(p=drop_tail)
         
         self.FeatureA1 = nn.Sequential(
-            nn.Conv2d(1, 10, 1),
-            nn.BatchNorm2d(10),
-            nn.Conv2d(10, 400, 5),
+            # nn.Conv2d(1, 10, 1),
+            # nn.BatchNorm2d(10),
+            nn.Conv2d(1, 400, 5),
             nn.BatchNorm2d(400),
             nn.LeakyReLU(),
             nn.MaxPool2d(4, 4),
             
-            nn.Conv2d(400, 10, 1),
-            nn.BatchNorm2d(10),
-            nn.LeakyReLU(),
+            # nn.Conv2d(400, 10, 1),
+            # nn.BatchNorm2d(10),
+            # nn.LeakyReLU(),
         )
 
 
         self.FeatureA2 = nn.Sequential(
-            nn.Conv2d(10, 400, 5),
+            nn.Conv2d(400, 400, 5),
             nn.BatchNorm2d(400),
             nn.LeakyReLU(),
             nn.MaxPool2d(4, 4),
 
-            nn.Conv2d(400, 10, 1),
-            nn.BatchNorm2d(10),
-            nn.LeakyReLU(),
+            # nn.Conv2d(400, 10, 1),
+            # nn.BatchNorm2d(10),
+            # nn.LeakyReLU(),
             )
 
 
         self.FeatureA3 = nn.Sequential(
-            nn.Conv2d(10, 400, 5),
+            nn.Conv2d(400, 400, 5),
             nn.BatchNorm2d(400),
             nn.LeakyReLU(),
 
-            nn.Conv2d(400, 10, 1),
-            nn.BatchNorm2d(10),
-            nn.LeakyReLU(),
+            # nn.Conv2d(400, 10, 1),
+            # nn.BatchNorm2d(10),
+            # nn.LeakyReLU(),
         )
 
         self.FeatureA4 = nn.Sequential(
-            nn.Conv2d(10, 400, 5),
+            nn.Conv2d(400, 400, 5),
             nn.BatchNorm2d(400),
             nn.LeakyReLU(),
 
-            nn.Conv2d(400, 100, 1),
-            nn.BatchNorm2d(100),
-            nn.LeakyReLU(),
+            # nn.Conv2d(400, 100, 1),
+            # nn.BatchNorm2d(100),
+            # nn.LeakyReLU(),
         )
 
         self.classifierA1 = nn.Sequential(
-            nn.Linear(1_600, 1_800),
+            nn.Linear(6_400, 1_800),
             nn.LeakyReLU(),
         )
 
