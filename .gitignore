@@ -133,10 +133,15 @@ dmypy.json
 .pyre/
 
 #run files
-runs/
+runs/*
 
 # chest_xray folder
 chest_xray/
+
+#
+/dataset/RSNA_DATASET_OUR_(split_into_sets)/*
+/dataset/RSNA_DATASET_OUR_(split_into_sets)/
+dataset/RSNA_DATASET_OUR_(split_into_sets)/
 
 #saved network
 best_network.pt
