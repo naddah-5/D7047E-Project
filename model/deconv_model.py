@@ -54,7 +54,7 @@ class DeconvCNN(nn.Module):
         self.to(device)
         
 
-    def forward(self, x: torch.Tensor, pool_indices, input_size, sizes) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, pool_indices, sizes) -> torch.Tensor:
         
         x = self.deFeatureA3(x)
 

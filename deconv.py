@@ -70,7 +70,7 @@ image_tensor = image_tensor.to(my_device)
 
 predictions, our_features, pool_indices, sizes  = model.forward(image_tensor)
 
-deconv_output = deconv_model.forward(our_features, pool_indices, input_size=image_tensor.shape[-2:], sizes=sizes)
+deconv_output = deconv_model.forward(our_features, pool_indices, sizes=sizes)
 
 image_tensor = image_tensor[0]
 print('predicted:\n',predictions)
