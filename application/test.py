@@ -12,7 +12,7 @@ def test_model(test_loader, network, device: str):
 
     for _, (data, labels) in enumerate(test_loader, 0):
         data, labels = data.to(device), labels.to(device)
-        predictions = network.forward(data)
+        predictions, _, _, _  = network.forward(data)
 
         _, predicted = torch.max(predictions.data, 1)
         total += labels.size(0)

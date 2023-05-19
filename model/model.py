@@ -16,8 +16,10 @@ class CNN(nn.Module):
             nn.Conv2d(1, 200, 7),
             nn.BatchNorm2d(200),
             nn.LeakyReLU(),
-            nn.MaxPool2d(4, 4),
-            
+        )
+        self.pool1 = nn.MaxPool2d(4, 4, return_indices=True)
+        
+        self.FeatureA1_5 = nn.Sequential(
             nn.Conv2d(200, 1, 1),
             nn.BatchNorm2d(1),
             nn.LeakyReLU(),
@@ -28,8 +30,11 @@ class CNN(nn.Module):
             nn.Conv2d(1, 400, 5),
             nn.BatchNorm2d(400),
             nn.LeakyReLU(),
-            nn.MaxPool2d(4, 4),
+            )
+        
+        self.pool2 = nn.MaxPool2d(4, 4, return_indices=True)
 
+        self.FeatureA2_5 = nn.Sequential(
             nn.Conv2d(400, 1, 1),
             nn.BatchNorm2d(1),
             nn.LeakyReLU(),
@@ -45,6 +50,8 @@ class CNN(nn.Module):
             nn.BatchNorm2d(100),
             nn.LeakyReLU(),
         )
+
+
 
         self.classifierA1 = nn.Sequential(
             nn.Linear(10_000, 8_192),
@@ -75,10 +82,20 @@ class CNN(nn.Module):
         self.to(device)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        sizes = []
         x = self.FeatureA1(x)
-        x = self.FeatureA2(x)
-        x = self.FeatureA3(x)
+        sizes.append(x.shape)
+        x , pool_indices1 = self.pool1(x)
+        x = self.FeatureA1_5(x)
 
+        x = self.FeatureA2(x)
+        sizes.append(x.shape)
+        x , pool_indices2 = self.pool2(x)
+        x = self.FeatureA2_5(x)
+        
+        x = self.FeatureA3(x)
+        
+        our_features = x
         x = torch.flatten(x, 1)
 
         x = self.dropin(self.classifierA1(x))
@@ -90,6 +107,7 @@ class CNN(nn.Module):
         x = self.droptail(self.classifierC2(x))
 
         x = self.classifierD1(x)
-        
-        return x
+
+        pool_indices = (pool_indices1, pool_indices2)
+        return x, our_features, pool_indices, sizes
     

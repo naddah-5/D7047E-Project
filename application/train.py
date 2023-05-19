@@ -38,7 +38,7 @@ class Training():
                 self.network.train()
                 iteration += 1
                 data, labels=data.to(self.device), labels.to(self.device)
-                predictions = self.network.forward(data)
+                predictions, _, _, _ = self.network.forward(data)
 
                 _, predicted = torch.max(predictions.data, 1)
                 total += labels.size(0)

@@ -13,7 +13,7 @@ def validate_model(val_loader, loss_function, network, device: str):
         network.eval()
         for _, (data, labels) in enumerate(val_loader):
             data, labels=data.to(device), labels.to(device)
-            predictions = network.forward(data)
+            predictions, _, _, _ = network.forward(data)
 
             _, predicted = torch.max(predictions.data, 1)
             total += labels.size(0)
