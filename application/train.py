@@ -34,11 +34,9 @@ class Training():
     def train_model(self):
         best_accuracy = 0
         iteration = 0
-        reduce_counter: int = 0
 
         for epoch in range(self.epochs):
-            self.scheduler(reduce_counter)
-            reduce_counter += 1
+            self.scheduler(epoch)
             correct = 0
             total = 0
             accuracy = 0
