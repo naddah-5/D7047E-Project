@@ -69,7 +69,7 @@ class CNN(nn.Module):
 
         self.classifierD1 = nn.Sequential(
             nn.Linear(1_024, class_count),
-            nn.Softmax(dim=1)
+            nn.LeakyReLU()
         )
 
         self.to(device)

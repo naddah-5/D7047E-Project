@@ -9,6 +9,7 @@ from .validate import validate_model
 class Training():
 
     def __init__(self, network, train_loader, val_loader, test_loader, epochs: int, learning_rate, best_net=None,device: str='cpu', debug_prediction: bool = False):
+        self.learning_rate = learning_rate
         self.network = network
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -21,12 +22,23 @@ class Training():
         self.device=device
         self.debug_prediction = debug_prediction
         self.predictions = []
+        self.scheduled_changes: list = [2, 4, 8, 16, 32, 64]
+
+    def scheduler(self, epoch: int):
+        if epoch in self.scheduled_changes:
+            self.learning_rate = self.learning_rate/2
+            self.optimizer = optim.Adam(self.network.parameters(), lr=self.learning_rate)
+            print('\nLearning rate reduced, new learning rate is: ', self.learning_rate)
+        
 
     def train_model(self):
         best_accuracy = 0
         iteration = 0
-        
+        reduce_counter: int = 0
+
         for epoch in range(self.epochs):
+            self.scheduler(reduce_counter)
+            reduce_counter += 1
             correct = 0
             total = 0
             accuracy = 0
